@@ -19,9 +19,26 @@ const routes = [
     component: ()=> import("../components/Home"),
     meta:{
       "title":"Home"
-    }
+    },
+    redirect: "/welcome",
+    children:[
+      {
+         path:"/welcome",
+         component:()=> import("../components/Welcome"),
+         meta:{
+          "title":"Welcome"
+         }
+      },
+      {
+        path:"/users",
+        component:()=> import("../components/user/Users"),
+        meta:{
+          title:"用户列表"
+        }
+      }
+    ]
+    
   }
-
 ]
 
 const router = new VueRouter({
@@ -30,6 +47,7 @@ const router = new VueRouter({
 })
 //路由导航守卫 用来实现权限管理
 router.beforeEach((to,from,next)=>{
+
   document.title=to.meta.title
   if (to.path === "/login") return next()
   let token = window.sessionStorage.getItem("token")
